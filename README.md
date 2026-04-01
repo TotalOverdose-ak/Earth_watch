@@ -101,52 +101,7 @@
 
 ---
 
-## PART 3: FOREST FIRE MODULE
 
----
-
-### What does the Fire module do? (1 sentence)
-> "It compares satellite images from BEFORE and AFTER a fire event to measure how badly the land was burned."
-
-### What is NBR?
-
-- **NBR** = Normalized Burn Ratio = (NIR − SWIR) / (NIR + SWIR)
-- Healthy vegetation → high NIR, low SWIR → **high NBR**
-- Burned land → low NIR, high SWIR → **low NBR**
-- Just a formula — nothing more!
-
-### What is dNBR?
-
-- **dNBR** = Pre-fire NBR **minus** Post-fire NBR
-- If land was healthy before (high NBR) and burned after (low NBR) → **dNBR is high** (big difference)
-- If land didn't burn → both NBR values are similar → **dNBR is near zero**
-
-**Analogy**:
-> Like checking your bank balance before and after a shopping trip. Big difference = you spent a lot. Small difference = you didn't buy much. dNBR measures how much "greenness" was lost.
-
-### Severity Classes (What the numbers mean)
-
-| dNBR Value | What happened |
-|-----------|---------------|
-| < 0.10 | Nothing burned, area is fine |
-| 0.10 – 0.27 | Mild surface-level burn (grass burned, trees survived) |
-| 0.27 – 0.66 | Significant damage (canopy + ground burned) |
-| > 0.66 | Everything destroyed (complete vegetation loss) |
-
-> These thresholds are from **USGS** (United States Geological Survey) — an international standard, not something we made up.
-
-### Why mask water bodies?
-- Water has very low NBR (similar to burned land)
-- Without masking, the model would say **"this lake is on fire"** — which is obviously wrong
-- We use **Dynamic World** to identify water pixels and exclude them
-
-### Why cloud masking?
-- Clouds block the satellite's view
-- If we include cloudy pixels, the results would be garbage
-- **QA60 band** = Sentinel-2's built-in "cloud flag" — it marks which pixels have clouds
-- We also filter: only use images with **< 20% cloud cover**
-
----
 
 ## PART 4: COMMON VIVA QUESTIONS + SAFE ANSWERS
 
@@ -582,6 +537,55 @@ Ulta kar diya — ab **har row ek pixel** hai aur usmein **10 values** hai. Mode
 > "H = image ki height, W = width. `.T` matlab transpose — matrix ko flip karna taaki har row ek pixel ban jaaye with 10 band values. Yeh isliye karte hai kyunki model ko input pixel-by-pixel chahiye, image-by-image nahi."
 
 **Analogy**: School ki attendance register mein rows = students, columns = subjects. Agar kisi ne ulta bana diya (rows = subjects, columns = students), toh `.T` se wapas sahi kar diya! 📋
+
+---
+
+
+
+## PART 3: FOREST FIRE MODULE
+
+---
+
+### What does the Fire module do? (1 sentence)
+> "It compares satellite images from BEFORE and AFTER a fire event to measure how badly the land was burned."
+
+### What is NBR?
+
+- **NBR** = Normalized Burn Ratio = (NIR − SWIR) / (NIR + SWIR)
+- Healthy vegetation → high NIR, low SWIR → **high NBR**
+- Burned land → low NIR, high SWIR → **low NBR**
+- Just a formula — nothing more!
+
+### What is dNBR?
+
+- **dNBR** = Pre-fire NBR **minus** Post-fire NBR
+- If land was healthy before (high NBR) and burned after (low NBR) → **dNBR is high** (big difference)
+- If land didn't burn → both NBR values are similar → **dNBR is near zero**
+
+**Analogy**:
+> Like checking your bank balance before and after a shopping trip. Big difference = you spent a lot. Small difference = you didn't buy much. dNBR measures how much "greenness" was lost.
+
+### Severity Classes (What the numbers mean)
+
+| dNBR Value | What happened |
+|-----------|---------------|
+| < 0.10 | Nothing burned, area is fine |
+| 0.10 – 0.27 | Mild surface-level burn (grass burned, trees survived) |
+| 0.27 – 0.66 | Significant damage (canopy + ground burned) |
+| > 0.66 | Everything destroyed (complete vegetation loss) |
+
+> These thresholds are from **USGS** (United States Geological Survey) — an international standard, not something we made up.
+
+### Why mask water bodies?
+- Water has very low NBR (similar to burned land)
+- Without masking, the model would say **"this lake is on fire"** — which is obviously wrong
+- We use **Dynamic World** to identify water pixels and exclude them
+
+### Why cloud masking?
+- Clouds block the satellite's view
+- If we include cloudy pixels, the results would be garbage
+- **QA60 band** = Sentinel-2's built-in "cloud flag" — it marks which pixels have clouds
+- We also filter: only use images with **< 20% cloud cover**
 
 ---
 
